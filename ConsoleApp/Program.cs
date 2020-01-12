@@ -8,7 +8,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var items = RssExtractor.GetItemsAsync("https://habr.com/ru/rss/all/all/").Result.ToList();
+            var items = RssExtractor.GetItemsAsync("https://career.habr.com/vacancies/rss?page=1&per_page=25").Result.ToList();
             
             items.ForEach(Console.WriteLine);
         }

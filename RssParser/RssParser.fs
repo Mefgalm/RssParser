@@ -3,8 +3,11 @@
 type Item =
     { Title: string
       Link: string
-      Description: string
-      Categories: string array }
+      Author: string
+      Guid: string
+      ImageLink: string
+      PublishDate: string
+      Description: string }
     
 namespace RssParser.FSharp 
     open RssParser
@@ -23,17 +26,18 @@ namespace RssParser.FSharp
         let private parseItem xmlNode =
             { Title = xmlNode |> selectInnerText "title"
               Link = xmlNode |> selectInnerText "link"
-              Description = xmlNode |> selectInnerText "description"
-              Categories = xmlNode.SelectNodes "category"
-                           |> Seq.cast<XmlNode>
-                           |> Seq.map(fun node -> node.InnerText)
-                           |> Seq.toArray }
+              Author = xmlNode |> selectInnerText "author"
+              Guid = xmlNode |> selectInnerText "guid"
+              ImageLink = xmlNode |> selectInnerText "link"
+              PublishDate = xmlNode |> selectInnerText "pubDate"
+              Description = xmlNode |> selectInnerText "description" }
 
         let getItems url = async {
             let! responseString = Http.AsyncRequestString url
             
             let doc = XmlDocument()
             doc.LoadXml responseString
+            
             
             return
                 doc.SelectNodes "/rss/channel/item"
